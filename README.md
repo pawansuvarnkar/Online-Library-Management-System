@@ -1,4 +1,4 @@
 \## New Feature
 
-Added improved book search functionality.
+This is version from conflict-test branch.
 
