@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Online Library Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="script.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fa-solid fa-book text-indigo-600 text-2xl mr-2"></i>
+                        <span class="font-bold text-xl text-gray-800">Library System</span>
+                    </div>
+                    <div class="hidden md:ml-10 md:flex md:space-x-8">
+                        <a href="#" class="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            <i class="fa-solid fa-home mr-2"></i> Dashboard
+                        </a>
+                        <a href="book-catalog.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-book mr-2"></i> Books
+                        </a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-clock-rotate-left mr-2"></i> Issued Books
+                        </a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-user mr-2"></i> Profile
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 hover:text-indigo-600 transition-colors">
+                        <i class="fa-solid fa-bell text-xl"></i>
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-700" id="user-name">User Name</p>
+                            <p class="text-xs text-gray-500" id="user-role">Student</p>
+                        </div>
+                        <div class="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                            <span class="text-indigo-600 font-bold" id="user-initials">JD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Welcome Message -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900" id="welcome-message">Welcome back!</h1>
+            <p class="text-gray-600 mt-1">Here's what's happening with your library account today.</p>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-indigo-500">
+                <div class="flex items-center">
+                    <div class="p-3 bg-indigo-100 rounded-lg mr-4">
+                        <i class="fa-solid fa-book text-indigo-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Total Books</p>
+                        <p class="text-2xl font-bold text-gray-800">12</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+                <div class="flex items-center">
+                    <div class="p-3 bg-green-100 rounded-lg mr-4">
+                        <i class="fa-solid fa-book-open text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Issued Books</p>
+                        <p class="text-2xl font-bold text-gray-800" id="issued-count">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500">
+                <div class="flex items-center">
+                    <div class="p-3 bg-yellow-100 rounded-lg mr-4">
+                        <i class="fa-solid fa-clock text-yellow-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Pending Returns</p>
+                        <p class="text-2xl font-bold text-gray-800" id="pending-count">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+                <div class="flex items-center">
+                    <div class="p-3 bg-blue-100 rounded-lg mr-4">
+                        <i class="fa-solid fa-star text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Fines</p>
+                        <p class="text-2xl font-bold text-gray-800" id="fine-amount">$0.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Issued Books Table -->
+            <div class="lg:col-span-2 bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800">Issued Books</h2>
+                    <a href="#" class="text-indigo-600 hover:text-indigo-900 font-medium text-sm">
+                        View all →
+                    </a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book Title</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issue Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200" id="issued-books-table-body">
+                            <!-- Rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                    <div id="no-issued-books" class="px-6 py-8 text-center text-gray-500 hidden">
+                        <i class="fa-solid fa-book-open text-4xl mb-4 block text-gray-300"></i>
+                        <p>No books issued yet.</p>
+                        <a href="book-catalog.html" class="text-indigo-600 hover:text-indigo-800 font-medium">Browse books</a>
+                    </div>
+                </div>
+                <div class="px-6 py-4 border-t border-gray-200">
+                    <a href="#" class="text-indigo-600 hover:text-indigo-900 font-medium text-sm">
+                        View all issued books →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-6">Quick Actions</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <a href="book-catalog.html" class="group bg-indigo-50 rounded-lg p-4 text-center transition-all hover:bg-indigo-100">
+                        <div class="mx-auto w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white mb-3 group-hover:bg-indigo-700 transition-colors">
+                            <i class="fa-solid fa-magnifying-glass text-xl"></i>
+                        </div>
+                        <span class="block text-sm font-medium text-gray-700 group-hover:text-indigo-800">Search Books</span>
+                    </a>
+                    <a href="#" class="group bg-green-50 rounded-lg p-4 text-center transition-all hover:bg-green-100">
+                        <div class="mx-auto w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white mb-3 group-hover:bg-green-700 transition-colors">
+                            <i class="fa-solid fa-bookmark text-xl"></i>
+                        </div>
+                        <span class="block text-sm font-medium text-gray-700 group-hover:text-green-800">My Bookmarks</span>
+                    </a>
+                    <a href="#" class="group bg-blue-50 rounded-lg p-4 text-center transition-all hover:bg-blue-100">
+                        <div class="mx-auto w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white mb-3 group-hover:bg-blue-700 transition-colors">
+                            <i class="fa-solid fa-file-lines text-xl"></i>
+                        </div>
+                        <span class="block text-sm font-medium text-gray-700 group-hover:text-blue-800">My Loans</span>
+                    </a>
+                    <a href="#" class="group bg-purple-50 rounded-lg p-4 text-center transition-all hover:bg-purple-100">
+                        <div class="mx-auto w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white mb-3 group-hover:bg-purple-700 transition-colors">
+                            <i class="fa-solid fa-gear text-xl"></i>
+                        </div>
+                        <span class="block text-sm font-medium text-gray-700 group-hover:text-purple-800">Settings</span>
+                    </a>
+                    <a href="#" class="group bg-orange-50 rounded-lg p-4 text-center transition-all hover:bg-orange-100">
+                        <div class="mx-auto w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white mb-3 group-hover:bg-orange-700 transition-colors">
+                            <i class="fa-solid fa-hat-cowboy text-xl"></i>
+                        </div>
+                        <span class="block text-sm font-medium text-gray-700 group-hover:text-orange-800">Reserve Book</span>
+                    </a>
+                    <a href="#" class="group bg-pink-50 rounded-lg p-4 text-center transition-all hover:bg-pink-100">
+                        <div class="mx-auto w-12 h-12 bg-pink-600 rounded-full flex items-center justify-center text-white mb-3 group-hover:bg-pink-700 transition-colors">
+                            <i class="fa-solid fa-message text-xl"></i>
+                        </div>
+                        <span class="block text-sm font-medium text-gray-700 group-hover:text-pink-800">Ask Librarian</span>
+                    </a>
+                    <a href="#" class="group bg-teal-50 rounded-lg p-4 text-center transition-all hover:bg-teal-100">
+                        <div class="mx-auto w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center text-white mb-3 group-hover:bg-teal-700 transition-colors">
+                            <i class="fa-solid fa-credit-card text-xl"></i>
+                        </div>
+                        <span class="block text-sm font-medium text-gray-700 group-hover:text-teal-800">Pay Fines</span>
+                    </a>
+                    <button id="logout-btn" class="group bg-red-50 rounded-lg p-4 text-center transition-all hover:bg-red-100">
+                        <div class="mx-auto w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white mb-3 group-hover:bg-red-700 transition-colors">
+                            <i class="fa-solid fa-right-from-bracket text-xl"></i>
+                        </div>
+                        <span class="block text-sm font-medium text-gray-700 group-hover:text-red-800">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = getCurrentUser();
+            
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Update user info
+            document.getElementById('user-name').textContent = user.firstName + ' ' + user.lastName;
+            document.getElementById('user-initials').textContent = user.firstName.charAt(0) + user.lastName.charAt(0);
+            document.getElementById('user-role').textContent = user.charAt(0).toUpperCase() + user.role.slice(1);
+            
+            // Update welcome message
+            document.getElementById('welcome-message').textContent = 'Welcome back, ' + user.firstName + '! 👋';
+            
+            // Load issued books
+            loadIssuedBooks(user.id);
+            
+            // Setup logout button
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    logout();
+                    window.location.href = 'index.html';
+                }
+            });
+        });
+        
+        // Load and display issued books
+        function loadIssuedBooks(userId) {
+            const issuedBooks = JSON.parse(localStorage.getItem('library_user_issues_' + userId) || '[]');
+            const tableBody = document.getElementById('issued-books-table-body');
+            const noBooksDiv = document.getElementById('no-issued-books');
+            const issuedCount = document.getElementById('issued-count');
+            const pendingCount = document.getElementById('pending-count');
+            
+            // Clear table
+            tableBody.innerHTML = '';
+            
+            if (issuedBooks.length === 0) {
+                noBooksDiv.classList.remove('hidden');
+                issuedCount.textContent = '0';
+                pendingCount.textContent = '0';
+                return;
+            }
+            
+            noBooksDiv.classList.add('hidden');
+            
+            // Filter only non-returned books
+            const activeIssues = issuedBooks.filter(issue => issue.returnDate === null);
+            
+            issuedCount.textContent = activeIssues.length;
+            pendingCount.textContent = activeIssues.length;
+            
+            // Calculate total fine
+            let totalFine = 0;
+            activeIssues.forEach(issue => {
+                const fine = calculateFine(issue.dueDate);
+                totalFine += fine;
+            });
+            document.getElementById('fine-amount').textContent = '$' + totalFine.toFixed(2);
+            
+            // Display each issued book
+            activeIssues.forEach(function(issue, index) {
+                const book = getBookById(issue.bookId);
+                if (!book) return;
+                
+                const issueDate = new Date(issue.issueDate).toLocaleDateString();
+                const dueDate = new Date(issue.dueDate).toLocaleDateString();
+                const fine = calculateFine(issue.dueDate);
+                
+                let statusClass = 'bg-green-100 text-green-800';
+                let statusText = 'In Progress';
+                
+                if (fine > 0) {
+                    statusClass = 'bg-red-100 text-red-800';
+                    statusText = 'Overdue';
+                } else if (new Date(issue.dueDate) <= new Date()) {
+                    statusClass = 'bg-yellow-100 text-yellow-800';
+                    statusText = 'Due Soon';
+                }
+                
+                const row = `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">${book.title}</div>
+                            <div class="text-sm text-gray-500">${book.author}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${book.author}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${issueDate}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm ${fine > 0 ? 'text-red-600' : 'text-gray-600'} font-medium">${dueDate}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                                ${statusText}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <button onclick="returnBook(${index}, '${userId}')" class="text-green-600 hover:text-green-800 font-medium text-sm">
+                                Return
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+        
+        // Return a book
+        function returnBook(issueIndex, userId) {
+            const issuedBooks = JSON.parse(localStorage.getItem('library_user_issues_' + userId) || '[]');
+            const issue = issuedBooks[issueIndex];
+            
+            if (confirm('Are you sure you want to return this book?')) {
+                const result = returnBook(issue.bookId, userId);
+                
+                if (result.success) {
+                    // Reload the page to update the table
+                    location.reload();
+                } else {
+                    alert(result.message);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

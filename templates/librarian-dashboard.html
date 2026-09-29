@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian Dashboard - Online Library Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-gray-900 shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fa-solid fa-book text-indigo-400 text-2xl mr-2"></i>
+                        <span class="font-bold text-xl text-white">Library System</span>
+                    </div>
+                    <div class="hidden md:ml-10 md:flex md:space-x-8">
+                        <a href="{{ url_for('librarian_dashboard') }}" class="border-indigo-500 text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            <i class="fa-solid fa-gauge mr-2"></i> Dashboard
+                        </a>
+                        <a href="{{ url_for('librarian_catalog') }}" class="border-transparent text-gray-300 hover:border-gray-500 hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-book mr-2"></i> Books
+                        </a>
+                        <a href="#" class="border-transparent text-gray-300 hover:border-gray-500 hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-users mr-2"></i> Users
+                        </a>
+                        <a href="#" class="border-transparent text-gray-300 hover:border-gray-500 hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-list mr-2"></i> Reports
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-300 hover:text-white transition-colors">
+                        <i class="fa-solid fa-bell text-xl"></i>
+                        <span class="absolute top-1 right-10 h-2 w-2 bg-red-500 rounded-full"></span>
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-white">{{ user.first_name }} {{ user.last_name }}</p>
+                            <p class="text-xs text-gray-400">{{ user.role|title }}</p>
+                        </div>
+                        <div class="h-10 w-10 bg-indigo-600 rounded-full flex items-center justify-center">
+                            <span class="text-white font-bold">{{ user.first_name[0] }}{{ user.last_name[0] }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Welcome Message -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Welcome back, {{ user.first_name }}! 👋</h1>
+            <p class="text-gray-600 mt-1">Here's what's happening at the library today.</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-indigo-500">
+                <div class="flex items-center">
+                    <div class="p-3 bg-indigo-100 rounded-lg mr-4">
+                        <i class="fa-solid fa-users text-indigo-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Total Users</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ total_users }}</p>
+                        <p class="text-xs text-green-600 mt-1"><i class="fa-solid fa-arrow-up mr-1"></i> 24 this week</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+                <div class="flex items-center">
+                    <div class="p-3 bg-green-100 rounded-lg mr-4">
+                        <i class="fa-solid fa-book text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Total Books</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ total_books }}</p>
+                        <p class="text-xs text-gray-500 mt-1">1,234 available</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+                <div class="flex items-center">
+                    <div class="p-3 bg-blue-100 rounded-lg mr-4">
+                        <i class="fa-solid fa-book-open text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Books Issued</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ books_issued }}</p>
+                        <p class="text-xs text-red-600 mt-1"><i class="fa-solid fa-exclamation-triangle mr-1"></i> 12 overdue</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
+                <div class="flex items-center">
+                    <div class="p-3 bg-purple-100 rounded-lg mr-4">
+                        <i class="fa-solid fa-sack-dollar text-purple-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Fines Collected</p>
+                        <p class="text-2xl font-bold text-gray-800">$2,450</p>
+                        <p class="text-xs text-gray-500 mt-1">This month</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Recent Transactions -->
+            <div class="lg:col-span-2 bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800">Recent Transactions</h2>
+                    <a href="#" class="text-indigo-600 hover:text-indigo-900 font-medium text-sm">
+                        View All →
+                    </a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date/Time</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        Issue
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">John Doe</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Introduction to Algorithms</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Today, 10:30 AM</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">$0.00</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        Return
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Jane Smith</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Clean Code</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Today, 9:45 AM</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">-$5.00</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                        Fine
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Bob Wilson</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Design Patterns</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Yesterday, 4:20 PM</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">$2.50</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                                        Registration
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Alice Brown</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">New Student</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Yesterday, 11:15 AM</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">-$0.00</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        Issue
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Charlie Davis</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">The Art of Computer Programming</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Yesterday, 3:30 PM</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">$0.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-6">Quick Actions</h2>
+                <div class="grid grid-cols-1 gap-4">
+                    <button class="w-full group bg-indigo-50 rounded-lg p-4 text-left transition-all hover:bg-indigo-100 border border-transparent hover:border-indigo-200">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white mr-3 group-hover:bg-indigo-700 transition-colors">
+                                <i class="fa-solid fa-user-plus text-xl"></i>
+                            </div>
+                            <div>
+                                <span class="block text-sm font-medium text-gray-700 group-hover:text-indigo-800">Add New User</span>
+                                <span class="block text-xs text-gray-500">Register student or faculty</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="w-full group bg-green-50 rounded-lg p-4 text-left transition-all hover:bg-green-100 border border-transparent hover:border-green-200">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white mr-3 group-hover:bg-green-700 transition-colors">
+                                <i class="fa-solid fa-book-plus text-xl"></i>
+                            </div>
+                            <div>
+                                <span class="block text-sm font-medium text-gray-700 group-hover:text-green-800">Add New Book</span>
+                                <span class="block text-xs text-gray-500">Catalog a new title</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="w-full group bg-blue-50 rounded-lg p-4 text-left transition-all hover:bg-blue-100 border border-transparent hover:border-blue-200">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white mr-3 group-hover:bg-blue-700 transition-colors">
+                                <i class="fa-solid fa-book-open text-xl"></i>
+                            </div>
+                            <div>
+                                <span class="block text-sm font-medium text-gray-700 group-hover:text-blue-800">Issue Book</span>
+                                <span class="block text-xs text-gray-500">Borrow to existing user</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="w-full group bg-purple-50 rounded-lg p-4 text-left transition-all hover:bg-purple-100 border border-transparent hover:border-purple-200">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white mr-3 group-hover:bg-purple-700 transition-colors">
+                                <i class="fa-solid fa-undo text-xl"></i>
+                            </div>
+                            <div>
+                                <span class="block text-sm font-medium text-gray-700 group-hover:text-purple-800">Process Return</span>
+                                <span class="block text-xs text-gray-500">Receive returned books</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="w-full group bg-orange-50 rounded-lg p-4 text-left transition-all hover:bg-orange-100 border border-transparent hover:border-orange-200">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center text-white mr-3 group-hover:bg-orange-700 transition-colors">
+                                <i class="fa-solid fa-calculator text-xl"></i>
+                            </div>
+                            <div>
+                                <span class="block text-sm font-medium text-gray-700 group-hover:text-orange-800">Collect Fine</span>
+                                <span class="block text-xs text-gray-500">Process overdue fines</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="w-full group bg-teal-50 rounded-lg p-4 text-left transition-all hover:bg-teal-100 border border-transparent hover:border-teal-200">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center text-white mr-3 group-hover:bg-teal-700 transition-colors">
+                                <i class="fa-solid fa-file-lines text-xl"></i>
+                            </div>
+                            <div>
+                                <span class="block text-sm font-medium text-gray-700 group-hover:text-teal-800">Generate Report</span>
+                                <span class="block text-xs text-gray-500">Daily/Weekly/Monthly reports</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="w-full group bg-pink-50 rounded-lg p-4 text-left transition-all hover:bg-pink-100 border border-transparent hover:border-pink-200">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center text-white mr-3 group-hover:bg-pink-700 transition-colors">
+                                <i class="fa-solid fa-gear text-xl"></i>
+                            </div>
+                            <div>
+                                <span class="block text-sm font-medium text-gray-700 group-hover:text-pink-800">Settings</span>
+                                <span class="block text-xs text-gray-500">Library configuration</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <a href="{{ url_for('logout') }}" class="w-full group bg-red-50 rounded-lg p-4 text-left transition-all hover:bg-red-100 border border-transparent hover:border-red-200">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white mr-3 group-hover:bg-red-700 transition-colors">
+                                <i class="fa-solid fa-right-from-bracket text-xl"></i>
+                            </div>
+                            <div>
+                                <span class="block text-sm font-medium text-gray-700 group-hover:text-red-800">Logout</span>
+                                <span class="block text-xs text-gray-500">Sign out of the system</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

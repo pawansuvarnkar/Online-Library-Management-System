@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details - Online Library Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fa-solid fa-book text-indigo-600 text-2xl mr-2"></i>
+                        <span class="font-bold text-xl text-gray-800">Library System</span>
+                    </div>
+                    <div class="hidden md:ml-10 md:flex md:space-x-8">
+                        <a href="{{ url_for('dashboard') }}" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-home mr-2"></i> Dashboard
+                        </a>
+                        <a href="{{ url_for('catalog') }}" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-book mr-2"></i> Books
+                        </a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-clock-rotate-left mr-2"></i> Issued Books
+                        </a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors">
+                            <i class="fa-solid fa-user mr-2"></i> Profile
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 hover:text-indigo-600 transition-colors">
+                        <i class="fa-solid fa-bell text-xl"></i>
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-700">{{ user.first_name }} {{ user.last_name }}</p>
+                            <p class="text-xs text-gray-500">{{ user.role|title }}</p>
+                        </div>
+                        <div class="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                            <span class="text-indigo-600 font-bold">{{ user.first_name[0] }}{{ user.last_name[0] }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="{{ url_for('catalog') }}" class="inline-flex items-center text-gray-600 hover:text-indigo-600 transition-colors">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Back to Catalog
+            </a>
+        </div>
+
+        <!-- Book Details Card -->
+        <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3">
+                <!-- Book Cover -->
+                <div class="bg-indigo-50 p-8 flex items-center justify-center">
+                    <div class="bg-indigo-100 rounded-lg p-6">
+                        <i class="fa-solid fa-book text-indigo-400 text-9xl"></i>
+                    </div>
+                </div>
+
+                <!-- Book Info -->
+                <div class="lg:col-span-2 p-8">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm font-semibold rounded">{{ book.category }}</span>
+                        <span class="px-3 py-1 {% if book.available_copies > 0 %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %} text-sm font-semibold rounded">
+                            {% if book.available_copies > 0 %}Available{% else %}Not Available{% endif %}
+                        </span>
+                    </div>
+
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ book.title }}</h1>
+                    <p class="text-xl text-gray-600 mb-6">{{ book.author }}</p>
+
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start">
+                            <div class="w-32 text-sm font-medium text-gray-500">Author:</div>
+                            <div class="text-gray-800">{{ book.author }}</div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-32 text-sm font-medium text-gray-500">ISBN:</div>
+                            <div class="text-gray-800">{{ book.isbn }}</div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-32 text-sm font-medium text-gray-500">Edition:</div>
+                            <div class="text-gray-800">3rd Edition</div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-32 text-sm font-medium text-gray-500">Publication Year:</div>
+                            <div class="text-gray-800">2021</div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-32 text-sm font-medium text-gray-500">Publisher:</div>
+                            <div class="text-gray-800">MIT Press</div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-32 text-sm font-medium text-gray-500">Pages:</div>
+                            <div class="text-gray-800">1312 pages</div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-32 text-sm font-medium text-gray-500">Language:</div>
+                            <div class="text-gray-800">English</div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-32 text-sm font-medium text-gray-500">Available Copies:</div>
+                            <div class="text-gray-800">{{ book.available_copies }}</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3">Description</h3>
+                        <p class="text-gray-600 leading-relaxed">{{ book.description }}</p>
+                    </div>
+
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-3">Table of Contents</h3>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1">
+                            <li>Foundations</li>
+                            <li>Sorting and Order Statistics</li>
+                            <li>Data Structures</li>
+                            <li>Advanced Design and Analysis Techniques</li>
+                            <li>Advanced Data Structures</li>
+                            <li>Algorithms on Graphs</li>
+                            <li>Matrix Operations and Linear Programming</li>
+                            <li>Algorithmic Issues and Modern Topics</li>
+                        </ul>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        {% if book.available_copies > 0 %}
+                        <form method="POST" action="{{ url_for('borrow_book', book_id=book.id) }}" class="flex-1">
+                            <button type="submit" class="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 transition-all duration-200 transform hover:scale-[1.02] flex items-center justify-center">
+                                <i class="fa-solid fa-book mr-2"></i> Borrow Book
+                            </button>
+                        </form>
+                        {% else %}
+                        <button class="flex-1 bg-gray-400 text-white py-3 px-6 rounded-lg font-semibold cursor-not-allowed flex items-center justify-center" disabled>
+                            <i class="fa-solid fa-xmark mr-2"></i> Not Available
+                        </button>
+                        {% endif %}
+                        <button class="flex-1 bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 transition-all duration-200 transform hover:scale-[1.02] flex items-center justify-center" disabled>
+                            <i class="fa-solid fa-bookmark mr-2"></i> Reserve
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Availability Section -->
+        <div class="mt-8 bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Availability</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Copy ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded">COPY-001</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Main Library - Section A</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Available
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <button class="text-indigo-600 hover:text-indigo-900 font-medium text-sm" onclick="borrowCopy('COPY-001')">
+                                    Borrow
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded">COPY-002</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Main Library - Section A</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Available
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <button class="text-indigo-600 hover:text-indigo-900 font-medium text-sm" onclick="borrowCopy('COPY-002')">
+                                    Borrow
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded">COPY-003</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Main Library - Section A</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Reserved
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <button class="text-gray-400 cursor-not-allowed text-sm">
+                                    Not Available
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded">COPY-004</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Main Library - Section A</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    Issued
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">Oct 15, 2026</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <button class="text-gray-400 cursor-not-allowed text-sm">
+                                    Not Available
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded">COPY-005</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Main Library - Section A</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Available
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <button class="text-indigo-600 hover:text-indigo-900 font-medium text-sm" onclick="borrowCopy('COPY-005')">
+                                    Borrow
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
